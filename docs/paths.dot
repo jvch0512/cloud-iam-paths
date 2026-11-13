@@ -1,0 +1,17 @@
+digraph iam {
+  rankdir=LR;
+  node [shape=box, fontname="Helvetica"];
+  "ADMIN" [style=filled, fillcolor="#f8d7da", fontcolor="#000000"];
+  "admin-role" [style=filled, fillcolor="#f8d7da", fontcolor="#000000"];
+  "dave" [style=filled, fillcolor="#f8d7da", fontcolor="#000000"];
+  "lambda-admin-role" [style=filled, fillcolor="#f8d7da", fontcolor="#000000"];
+  "alice" -> "ADMIN" [label="CreatePolicyVersion"];
+  "bob" -> "lambda-admin-role" [label="PassRole+lambda"];
+  "build-role" -> "ADMIN" [label="AttachRolePolicy"];
+  "carol" -> "ADMIN" [label="AddUserToGroup"];
+  "erin" -> "dave" [label="CreateAccessKey"];
+  "frank" -> "build-role" [label="AssumeRole"];
+  "ivan" -> "admin-role" [label="UpdateAssumeRolePolicy"];
+  "kim" -> "ADMIN" [label="SetDefaultPolicyVersion"];
+  "leo" -> "ADMIN" [label="AttachUserPolicy"];
+}

@@ -1,0 +1,466 @@
+{
+  "UserDetailList": [
+    {
+      "UserName": "alice",
+      "Arn": "arn:aws:iam::111122223333:user/alice",
+      "GroupList": [
+        "developers"
+      ],
+      "AttachedManagedPolicies": []
+    },
+    {
+      "UserName": "bob",
+      "Arn": "arn:aws:iam::111122223333:user/bob",
+      "UserPolicyList": [
+        {
+          "PolicyName": "lambda-dev",
+          "PolicyDocument": {
+            "Version": "2012-10-17",
+            "Statement": [
+              {
+                "Effect": "Allow",
+                "Action": "iam:PassRole",
+                "Resource": "arn:aws:iam::111122223333:role/lambda-admin-role"
+              },
+              {
+                "Effect": "Allow",
+                "Action": [
+                  "lambda:CreateFunction",
+                  "lambda:InvokeFunction"
+                ],
+                "Resource": "*"
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "UserName": "carol",
+      "Arn": "arn:aws:iam::111122223333:user/carol",
+      "UserPolicyList": [
+        {
+          "PolicyName": "group-manager",
+          "PolicyDocument": {
+            "Version": "2012-10-17",
+            "Statement": [
+              {
+                "Effect": "Allow",
+                "Action": "iam:AddUserToGroup",
+                "Resource": "arn:aws:iam::111122223333:group/ops-admins"
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "UserName": "dave",
+      "Arn": "arn:aws:iam::111122223333:user/dave",
+      "AttachedManagedPolicies": [
+        {
+          "PolicyName": "AdministratorAccess",
+          "PolicyArn": "arn:aws:iam::aws:policy/AdministratorAccess"
+        }
+      ]
+    },
+    {
+      "UserName": "erin",
+      "Arn": "arn:aws:iam::111122223333:user/erin",
+      "UserPolicyList": [
+        {
+          "PolicyName": "contractor",
+          "PolicyDocument": {
+            "Version": "2012-10-17",
+            "Statement": [
+              {
+                "Effect": "Allow",
+                "Action": "iam:CreateAccessKey",
+                "Resource": "arn:aws:iam::111122223333:user/dave"
+              },
+              {
+                "Effect": "Allow",
+                "Action": "s3:ListAllMyBuckets",
+                "Resource": "*"
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "UserName": "frank",
+      "Arn": "arn:aws:iam::111122223333:user/frank",
+      "UserPolicyList": [
+        {
+          "PolicyName": "ci-access",
+          "PolicyDocument": {
+            "Version": "2012-10-17",
+            "Statement": [
+              {
+                "Effect": "Allow",
+                "Action": "sts:AssumeRole",
+                "Resource": "arn:aws:iam::111122223333:role/build-role"
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "UserName": "grace",
+      "Arn": "arn:aws:iam::111122223333:user/grace",
+      "AttachedManagedPolicies": [
+        {
+          "PolicyName": "ViewOnly",
+          "PolicyArn": "arn:aws:iam::111122223333:policy/ViewOnly"
+        }
+      ]
+    },
+    {
+      "UserName": "heidi",
+      "Arn": "arn:aws:iam::111122223333:user/heidi",
+      "UserPolicyList": [
+        {
+          "PolicyName": "self-service",
+          "PolicyDocument": {
+            "Version": "2012-10-17",
+            "Statement": [
+              {
+                "Effect": "Allow",
+                "Action": "iam:PutUserPolicy",
+                "Resource": "arn:aws:iam::111122223333:user/heidi"
+              },
+              {
+                "Effect": "Deny",
+                "Action": "iam:PutUserPolicy",
+                "Resource": "*"
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "UserName": "ivan",
+      "Arn": "arn:aws:iam::111122223333:user/ivan",
+      "UserPolicyList": [
+        {
+          "PolicyName": "trust-editor",
+          "PolicyDocument": {
+            "Version": "2012-10-17",
+            "Statement": [
+              {
+                "Effect": "Allow",
+                "Action": "iam:UpdateAssumeRolePolicy",
+                "Resource": "arn:aws:iam::111122223333:role/admin-role"
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "UserName": "kim",
+      "Arn": "arn:aws:iam::111122223333:user/kim",
+      "AttachedManagedPolicies": [
+        {
+          "PolicyName": "LegacyPolicy",
+          "PolicyArn": "arn:aws:iam::111122223333:policy/LegacyPolicy"
+        }
+      ],
+      "UserPolicyList": [
+        {
+          "PolicyName": "versions",
+          "PolicyDocument": {
+            "Version": "2012-10-17",
+            "Statement": [
+              {
+                "Effect": "Allow",
+                "Action": "iam:SetDefaultPolicyVersion",
+                "Resource": "arn:aws:iam::111122223333:policy/LegacyPolicy"
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "UserName": "leo",
+      "Arn": "arn:aws:iam::111122223333:user/leo",
+      "UserPolicyList": [
+        {
+          "PolicyName": "mfa-only",
+          "PolicyDocument": {
+            "Version": "2012-10-17",
+            "Statement": [
+              {
+                "Effect": "Allow",
+                "Action": "iam:AttachUserPolicy",
+                "Resource": "arn:aws:iam::111122223333:user/leo",
+                "Condition": {
+                  "Bool": {
+                    "aws:MultiFactorAuthPresent": "true"
+                  }
+                }
+              }
+            ]
+          }
+        }
+      ]
+    }
+  ],
+  "GroupDetailList": [
+    {
+      "GroupName": "developers",
+      "Arn": "arn:aws:iam::111122223333:group/developers",
+      "AttachedManagedPolicies": [
+        {
+          "PolicyName": "DevPolicy",
+          "PolicyArn": "arn:aws:iam::111122223333:policy/DevPolicy"
+        }
+      ]
+    },
+    {
+      "GroupName": "ops-admins",
+      "Arn": "arn:aws:iam::111122223333:group/ops-admins",
+      "AttachedManagedPolicies": [
+        {
+          "PolicyName": "AdministratorAccess",
+          "PolicyArn": "arn:aws:iam::aws:policy/AdministratorAccess"
+        }
+      ]
+    }
+  ],
+  "RoleDetailList": [
+    {
+      "RoleName": "lambda-admin-role",
+      "Arn": "arn:aws:iam::111122223333:role/lambda-admin-role",
+      "AssumeRolePolicyDocument": {
+        "Version": "2012-10-17",
+        "Statement": [
+          {
+            "Effect": "Allow",
+            "Principal": {
+              "Service": "lambda.amazonaws.com"
+            },
+            "Action": "sts:AssumeRole"
+          }
+        ]
+      },
+      "AttachedManagedPolicies": [
+        {
+          "PolicyName": "AdministratorAccess",
+          "PolicyArn": "arn:aws:iam::aws:policy/AdministratorAccess"
+        }
+      ]
+    },
+    {
+      "RoleName": "build-role",
+      "Arn": "arn:aws:iam::111122223333:role/build-role",
+      "AssumeRolePolicyDocument": {
+        "Version": "2012-10-17",
+        "Statement": [
+          {
+            "Effect": "Allow",
+            "Principal": {
+              "AWS": "arn:aws:iam::111122223333:root"
+            },
+            "Action": "sts:AssumeRole"
+          }
+        ]
+      },
+      "RolePolicyList": [
+        {
+          "PolicyName": "build",
+          "PolicyDocument": {
+            "Version": "2012-10-17",
+            "Statement": [
+              {
+                "Effect": "Allow",
+                "Action": [
+                  "s3:GetObject",
+                  "s3:PutObject"
+                ],
+                "Resource": "*"
+              },
+              {
+                "Effect": "Allow",
+                "Action": "iam:AttachRolePolicy",
+                "Resource": "arn:aws:iam::111122223333:role/build-role"
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "RoleName": "admin-role",
+      "Arn": "arn:aws:iam::111122223333:role/admin-role",
+      "AssumeRolePolicyDocument": {
+        "Version": "2012-10-17",
+        "Statement": [
+          {
+            "Effect": "Allow",
+            "Principal": {
+              "AWS": "arn:aws:iam::111122223333:user/judy"
+            },
+            "Action": "sts:AssumeRole"
+          }
+        ]
+      },
+      "AttachedManagedPolicies": [
+        {
+          "PolicyName": "AdministratorAccess",
+          "PolicyArn": "arn:aws:iam::aws:policy/AdministratorAccess"
+        }
+      ]
+    },
+    {
+      "RoleName": "public-role",
+      "Arn": "arn:aws:iam::111122223333:role/public-role",
+      "AssumeRolePolicyDocument": {
+        "Version": "2012-10-17",
+        "Statement": [
+          {
+            "Effect": "Allow",
+            "Principal": {
+              "AWS": "*"
+            },
+            "Action": "sts:AssumeRole"
+          }
+        ]
+      },
+      "RolePolicyList": [
+        {
+          "PolicyName": "minimal",
+          "PolicyDocument": {
+            "Version": "2012-10-17",
+            "Statement": [
+              {
+                "Effect": "Allow",
+                "Action": "s3:ListAllMyBuckets",
+                "Resource": "*"
+              }
+            ]
+          }
+        }
+      ]
+    }
+  ],
+  "Policies": [
+    {
+      "PolicyName": "AdministratorAccess",
+      "Arn": "arn:aws:iam::aws:policy/AdministratorAccess",
+      "PolicyVersionList": [
+        {
+          "VersionId": "v1",
+          "IsDefaultVersion": true,
+          "Document": {
+            "Version": "2012-10-17",
+            "Statement": [
+              {
+                "Effect": "Allow",
+                "Action": "*",
+                "Resource": "*"
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "PolicyName": "DevPolicy",
+      "Arn": "arn:aws:iam::111122223333:policy/DevPolicy",
+      "PolicyVersionList": [
+        {
+          "VersionId": "v1",
+          "IsDefaultVersion": true,
+          "Document": {
+            "Version": "2012-10-17",
+            "Statement": [
+              {
+                "Effect": "Allow",
+                "Action": [
+                  "s3:GetObject",
+                  "ec2:Describe*"
+                ],
+                "Resource": "*"
+              },
+              {
+                "Effect": "Allow",
+                "Action": [
+                  "iam:CreatePolicyVersion",
+                  "iam:ListPolicyVersions"
+                ],
+                "Resource": "arn:aws:iam::111122223333:policy/DevPolicy"
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "PolicyName": "ViewOnly",
+      "Arn": "arn:aws:iam::111122223333:policy/ViewOnly",
+      "PolicyVersionList": [
+        {
+          "VersionId": "v1",
+          "IsDefaultVersion": true,
+          "Document": {
+            "Version": "2012-10-17",
+            "Statement": [
+              {
+                "Effect": "Allow",
+                "Action": [
+                  "iam:Get*",
+                  "iam:List*",
+                  "s3:Get*",
+                  "s3:List*",
+                  "ec2:Describe*"
+                ],
+                "Resource": "*"
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "PolicyName": "LegacyPolicy",
+      "Arn": "arn:aws:iam::111122223333:policy/LegacyPolicy",
+      "PolicyVersionList": [
+        {
+          "VersionId": "v1",
+          "IsDefaultVersion": false,
+          "Document": {
+            "Version": "2012-10-17",
+            "Statement": [
+              {
+                "Effect": "Allow",
+                "Action": "*",
+                "Resource": "*"
+              }
+            ]
+          }
+        },
+        {
+          "VersionId": "v2",
+          "IsDefaultVersion": true,
+          "Document": {
+            "Version": "2012-10-17",
+            "Statement": [
+              {
+                "Effect": "Allow",
+                "Action": [
+                  "s3:Get*"
+                ],
+                "Resource": "*"
+              }
+            ]
+          }
+        }
+      ]
+    }
+  ]
+}

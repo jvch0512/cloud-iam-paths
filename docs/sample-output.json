@@ -1,0 +1,176 @@
+{
+  "account": "111122223333",
+  "principals": 15,
+  "admins": [
+    "admin-role",
+    "lambda-admin-role",
+    "dave"
+  ],
+  "paths": [
+    {
+      "from": "alice",
+      "kind": "user",
+      "steps": [
+        {
+          "from": "arn:aws:iam::111122223333:user/alice",
+          "to": "*ADMIN*",
+          "technique": "CreatePolicyVersion",
+          "needs": [
+            "iam:CreatePolicyVersion on arn:aws:iam::111122223333:policy/DevPolicy"
+          ],
+          "explanation": "Publish a new default version of the attached policy DevPolicy that allows everything."
+        }
+      ]
+    },
+    {
+      "from": "bob",
+      "kind": "user",
+      "steps": [
+        {
+          "from": "arn:aws:iam::111122223333:user/bob",
+          "to": "arn:aws:iam::111122223333:role/lambda-admin-role",
+          "technique": "PassRole+lambda",
+          "needs": [
+            "iam:PassRole on arn:aws:iam::111122223333:role/lambda-admin-role",
+            "lambda:CreateFunction",
+            "lambda:InvokeFunction"
+          ],
+          "explanation": "Pass lambda-admin-role to lambda and create and invoke a Lambda function that runs as the role."
+        }
+      ]
+    },
+    {
+      "from": "build-role",
+      "kind": "role",
+      "steps": [
+        {
+          "from": "arn:aws:iam::111122223333:role/build-role",
+          "to": "*ADMIN*",
+          "technique": "AttachRolePolicy",
+          "needs": [
+            "iam:AttachRolePolicy on arn:aws:iam::111122223333:role/build-role"
+          ],
+          "explanation": "Attach or write an administrator policy on this role itself."
+        }
+      ]
+    },
+    {
+      "from": "carol",
+      "kind": "user",
+      "steps": [
+        {
+          "from": "arn:aws:iam::111122223333:user/carol",
+          "to": "*ADMIN*",
+          "technique": "AddUserToGroup",
+          "needs": [
+            "iam:AddUserToGroup on arn:aws:iam::111122223333:group/ops-admins"
+          ],
+          "explanation": "Add themselves to the administrator group ops-admins."
+        }
+      ]
+    },
+    {
+      "from": "erin",
+      "kind": "user",
+      "steps": [
+        {
+          "from": "arn:aws:iam::111122223333:user/erin",
+          "to": "arn:aws:iam::111122223333:user/dave",
+          "technique": "CreateAccessKey",
+          "needs": [
+            "iam:CreateAccessKey on arn:aws:iam::111122223333:user/dave"
+          ],
+          "explanation": "Create credentials for dave and sign in as them."
+        }
+      ]
+    },
+    {
+      "from": "ivan",
+      "kind": "user",
+      "steps": [
+        {
+          "from": "arn:aws:iam::111122223333:user/ivan",
+          "to": "arn:aws:iam::111122223333:role/admin-role",
+          "technique": "UpdateAssumeRolePolicy",
+          "needs": [
+            "iam:UpdateAssumeRolePolicy on arn:aws:iam::111122223333:role/admin-role"
+          ],
+          "explanation": "Rewrite the trust policy of admin-role to trust them, then assume it."
+        }
+      ]
+    },
+    {
+      "from": "kim",
+      "kind": "user",
+      "steps": [
+        {
+          "from": "arn:aws:iam::111122223333:user/kim",
+          "to": "*ADMIN*",
+          "technique": "SetDefaultPolicyVersion",
+          "needs": [
+            "iam:SetDefaultPolicyVersion on arn:aws:iam::111122223333:policy/LegacyPolicy"
+          ],
+          "explanation": "Switch LegacyPolicy back to its older version v1, which allows everything."
+        }
+      ]
+    },
+    {
+      "from": "leo",
+      "kind": "user",
+      "steps": [
+        {
+          "from": "arn:aws:iam::111122223333:user/leo",
+          "to": "*ADMIN*",
+          "technique": "AttachUserPolicy",
+          "needs": [
+            "iam:AttachUserPolicy on arn:aws:iam::111122223333:user/leo"
+          ],
+          "explanation": "Attach or write an administrator policy on their own user.",
+          "conditional": true
+        }
+      ],
+      "conditional": true
+    },
+    {
+      "from": "frank",
+      "kind": "user",
+      "steps": [
+        {
+          "from": "arn:aws:iam::111122223333:user/frank",
+          "to": "arn:aws:iam::111122223333:role/build-role",
+          "technique": "AssumeRole",
+          "needs": [
+            "sts:AssumeRole on arn:aws:iam::111122223333:role/build-role"
+          ],
+          "explanation": "Assume the role build-role, whose trust policy allows them."
+        },
+        {
+          "from": "arn:aws:iam::111122223333:role/build-role",
+          "to": "*ADMIN*",
+          "technique": "AttachRolePolicy",
+          "needs": [
+            "iam:AttachRolePolicy on arn:aws:iam::111122223333:role/build-role"
+          ],
+          "explanation": "Attach or write an administrator policy on this role itself."
+        }
+      ]
+    }
+  ],
+  "no_path": [
+    "public-role",
+    "grace",
+    "heidi"
+  ],
+  "findings": [
+    {
+      "severity": "high",
+      "subject": "public-role",
+      "message": "Trust policy allows any principal (\"*\") to assume this role with no condition."
+    },
+    {
+      "severity": "info",
+      "subject": "dave",
+      "message": "User has administrator access directly; prefer a role that is assumed with MFA."
+    }
+  ]
+}
